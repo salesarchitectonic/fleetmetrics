@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FleetMetrics | Data-Driven Fleet Consultancy for CFOs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e3a8a',
+                        secondary: '#1e40af',
+                        accent: '#3b82f6',
+                        dark: '#0f172a',
+                        light: '#f8fafc'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .dashboard-preview {
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #3b82f6;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-dark">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-chart-line text-accent text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-primary">FleetMetrics</span>
+                    </div>
+                </div>
+                <div class="hidden md:ml-6 md:flex md:items-center md:space-x-8">
+                    <a href="#services" class="nav-link text-gray-700 hover:text-primary px-3 py-2 text-sm font-medium">Services</a>
+                    <a href="#approach" class="nav-link text-gray-700 hover:text-primary px-3 py-2 text-sm font-medium">Approach</a>
+                    <a href="#case-studies" class="nav-link text-gray-700 hover:text-primary px-3 py-2 text-sm font-medium">Case Studies</a>
+                    <a href="#pricing" class="nav-link text-gray-700 hover:text-primary px-3 py-2 text-sm font-medium">Pricing</a>
+                    <a href="#contact" class="bg-accent text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-secondary transition">Get Consultation</a>
+                </div>
+                <div class="-mr-2 flex items-center md:hidden">
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-accent">
+                        <span class="sr-only">Open main menu</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#services" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">Services</a>
+                <a href="#approach" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">Approach</a>
+                <a href="#case-studies" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">Case Studies</a>
+                <a href="#pricing" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">Pricing</a>
+                <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-accent hover:bg-secondary">Get Consultation</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient text-white pt-24 pb-20 md:pt-32 md:pb-28">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="md:flex md:items-center md:justify-between">
+                <div class="md:w-1/2 mb-12 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6">Data-Driven Fleet Optimization for CFOs</h1>
+                    <p class="text-xl text-gray-100 mb-8">Transform your fleet operations into a strategic asset with our advanced analytics and actionable insights tailored for financial executives.</p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="#contact" class="bg-white text-primary px-6 py-3 rounded-md text-lg font-semibold hover:bg-gray-100 transition text-center">Request Consultation</a>
+                        <a href="#case-studies" class="border-2 border-white text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-white hover:text-primary transition text-center">View Case Studies</a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 relative">
+                    <div class="dashboard-preview overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Fleet Analytics Dashboard" class="w-full h-auto rounded-lg">
+                    </div>
+                    <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg shadow-lg hidden md:block">
+                        <div class="flex items-center">
+                            <div class="bg-green-100 p-3 rounded-full mr-3">
+                                <i class="fas fa-arrow-up text-green-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Average Savings</p>
+                                <p class="text-2xl font-bold text-dark">23.7%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trusted By Section -->
+    <section class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-gray-500 mb-8">Trusted by finance teams at</p>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-8 items-center">
+                <div class="flex justify-center">
+                    <img src="https://logo.clearbit.com/fedex.com" alt="FedEx" class="h-12 opacity-70 hover:opacity-100 transition">
+                </div>
+                <div class="flex justify-center">
+                    <img src="https://logo.clearbit.com/ups.com" alt="UPS" class="h-10 opacity-70 hover:opacity-100 transition">
+                </div>
+                <div class="flex justify-center">
+                    <img src="https://logo.clearbit.com/amazon.com" alt="Amazon" class="h-10 opacity-70 hover:opacity-100 transition">
+                </div>
+                <div class="flex justify-center">
+                    <img src="https://logo.clearbit.com/walmart.com" alt="Walmart" class="h-8 opacity-70 hover:opacity-100 transition">
+                </div>
+                <div class="flex justify-center">
+                    <img src="https://logo.clearbit.com/dhl.com" alt="DHL" class="h-10 opacity-70 hover:opacity-100 transition">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Strategic Fleet Analytics for CFOs</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">We translate complex fleet data into clear financial insights that drive cost reduction and operational efficiency.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="bg-white p-8 rounded-xl shadow-md card-hover">
+                    <div class="bg-blue-50 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-dollar-sign text-accent text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Cost Optimization</h3>
+                    <p class="text-gray-600 mb-4">Identify hidden costs and inefficiencies in your fleet operations with our comprehensive cost analysis framework.</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            Fuel consumption analysis
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            Maintenance cost benchmarking
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            Depreciation strategies
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Service 2 -->
+                <div class="bg-white p-8 rounded-xl shadow-md card-hover">
+                    <div class="bg-blue-50 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-chart-pie text-accent text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Asset Utilization</h3>
+                    <p class="text-gray-600 mb-4">Maximize the return on your fleet assets through data-driven utilization analysis and right-sizing recommendations.</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            Utilization rate optimization
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            Fleet right-sizing analysis
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            Telematics integration
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Service 3 -->
+                <div class="bg-white p-8 rounded-xl shadow-md card-hover">
+                    <div class="bg-blue-50 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-road text-accent text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Sustainability Planning</h3>
+                    <p class="text-gray-600 mb-4">Develop a roadmap for fleet electrification and sustainability initiatives with clear financial projections.</p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            EV transition cost-benefit
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            Carbon footprint analysis
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            Incentive program guidance
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-primary text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="stat-card p-6 rounded-lg text-center">
+                    <p class="text-4xl font-bold mb-2">$4.2M</p>
+                    <p class="text-gray-200">Average annual savings for clients</p>
+                </div>
+                <div class="stat-card p-6 rounded-lg text-center">
+                    <p class="text-4xl font-bold mb-2">17%</p>
+                    <p class="text-gray-200">Average reduction in fuel costs</p>
+                </div>
+                <div class="stat-card p-6 rounded-lg text-center">
+                    <p class="text-4xl font-bold mb-2">92%</p>
+                    <p class="text-gray-200">Of clients see ROI within 6 months</p>
+                </div>
+                <div class="stat-card p-6 rounded-lg text-center">
+                    <p class="text-4xl font-bold mb-2">150+</p>
+                    <p class="text-gray-200">Fleets analyzed across industries</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Approach Section -->
+    <section id="approach" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Our CFO-Centric Approach</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">We speak the language of finance, delivering insights that align with your strategic objectives.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="mb-8">
+                        <div class="flex items-start mb-4">
+                            <div class="bg-accent text-white rounded-full w-8 h-8 flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                                <span class="font-bold">1</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Financial Benchmarking</h3>
+                                <p class="text-gray-600">We establish key financial metrics and compare your fleet performance against industry benchmarks to identify improvement opportunities.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <div class="flex items-start mb-4">
+                            <div class="bg-accent text-white rounded-full w-8 h-8 flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                                <span class="font-bold">2</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Data Integration</h3>
+                                <p class="text-gray-600">Our proprietary tools aggregate data from multiple sources (telematics, ERP, fuel cards) into a single financial view.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <div class="flex items-start mb-4">
+                            <div class="bg-accent text-white rounded-full w-8 h-8 flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                                <span class="font-bold">3</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Scenario Modeling</h3>
+                                <p class="text-gray-600">We build financial models to project the impact of different fleet strategies on your P&L and balance sheet.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex items-start mb-4">
+                            <div class="bg-accent text-white rounded-full w-8 h-8 flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                                <span class="font-bold">4</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Executive Reporting</h3>
+                                <p class="text-gray-600">Tailored reports that highlight financial impacts and recommendations in formats ready for board presentations.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Analytics Approach" class="rounded-xl shadow-xl">
+                    <div class="absolute -bottom-6 -right-6 bg-white p-6 rounded-lg shadow-lg w-3/4">
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-file-invoice-dollar text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Sample Financial Report</p>
+                                <p class="font-bold text-dark">Download Example</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Studies Section -->
+    <section id="case-studies" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Proven Impact for Finance Teams</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Real-world examples of how we've helped CFOs transform their fleet operations.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Case Study 1 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg card-hover">
+                    <div class="h-48 bg-blue-600 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1601584115197-04eaa82d024b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Case Study" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-primary opacity-70"></div>
+                        <div class="absolute bottom-4 left-4">
+                            <span class="bg-accent text-white text-xs font-semibold px-3 py-1 rounded-full">Logistics</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3">Regional Distribution Network Optimization</h3>
+                        <p class="text-gray-600 mb-4">For a national retailer, we identified $1.8M in annual savings by optimizing their distribution network and right-sizing their fleet.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-sm text-gray-500">Key Metric Improved</p>
+                                <p class="font-bold">Cost per mile reduced by 19%</p>
+                            </div>
+                            <a href="#" class="text-accent font-semibold hover:text-secondary flex items-center">
+                                Read Case Study <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Case Study 2 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg card-hover">
+                    <div class="h-48 bg-blue-600 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Case Study" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-primary opacity-70"></div>
+                        <div class="absolute bottom-4 left-4">
+                            <span class="bg-accent text-white text-xs font-semibold px-3 py-1 rounded-full">Manufacturing</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3">EV Transition Financial Modeling</h3>
+                        <p class="text-gray-600 mb-4">Helped an industrial manufacturer develop a 5-year EV transition plan with detailed CAPEX and OPEX projections, identifying $2.3M in tax incentives.</p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-sm text-gray-500">Key Metric Improved</p>
+                                <p class="font-bold">7-year NPV positive</p>
+                            </div>
+                            <a href="#" class="text-accent font-semibold hover:text-secondary flex items-center">
+                                Read Case Study <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-accent hover:bg-secondary">
+                    View All Case Studies
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">What CFOs Say About Our Work</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Hear from financial executives who've transformed their fleet operations.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-50 p-8 rounded-xl">
+                    <div class="flex items-center mb-6">
+                        <div class="flex-shrink-0">
+                            <img class="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Testimonial">
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-lg font-bold">Sarah Johnson</h4>
+                            <p class="text-gray-600">CFO, Regional Logistics</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic mb-6">"FleetMetrics provided the financial clarity we needed to make data-driven decisions about our fleet. Their analysis identified $750K in annual savings we had completely overlooked."</p>
+                    <div class="flex">
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-50 p-8 rounded-xl">
+                    <div class="flex items-center mb-6">
+                        <div class="flex-shrink-0">
+                            <img class="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Testimonial">
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-lg font-bold">Michael Chen</h4>
+                            <p class="text-gray-600">VP Finance, Manufacturing</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic mb-6">"The financial models FleetMetrics built for our EV transition were instrumental in securing board approval. They translated technical fleet data into clear financial projections."</p>
+                    <div class="flex">
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-gray-50 p-8 rounded-xl">
+                    <div class="flex items-center mb-6">
+                        <div class="flex-shrink-0">
+                            <img class="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1545167622-3a6ac756afa4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=712&q=80" alt="Testimonial">
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-lg font-bold">David Rodriguez</h4>
+                            <p class="text-gray-600">CFO, Food Distribution</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic mb-6">"As a CFO, I appreciate how FleetMetrics focuses on the financial impacts rather than just operational metrics. Their benchmarking against industry peers was particularly valuable."</p>
+                    <div class="flex">
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Strategic Fleet Analysis Packages</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Flexible engagement models designed for finance executives.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Tier 1 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold mb-4">Diagnostic Review</h3>
+                        <p class="text-gray-600 mb-6">Quick assessment of your fleet's financial performance with high-level recommendations.</p>
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold">$9,500</span>
+                            <span class="text-gray-500">/ one-time</span>
+                        </div>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                Financial benchmarking
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                Cost structure analysis
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                High-impact opportunity identification
+                            </li>
+                            <li class="flex items-center text-gray-400">
+                                <i class="fas fa-times text-gray-300 mr-3"></i>
+                                Detailed implementation plan
+                            </li>
+                            <li class="flex items-center text-gray-400">
+                                <i class="fas fa-times text-gray-300 mr-3"></i>
+                                Ongoing support
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="px-8 pb-8">
+                        <a href="#contact" class="block w-full text-center bg-gray-100 text-primary px-6 py-3 rounded-md font-medium hover:bg-gray-200 transition">Get Started</a>
+                    </div>
+                </div>
+                
+                <!-- Tier 2 (Featured) -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover border-2 border-accent transform scale-105">
+                    <div class="bg-accent text-white text-center py-2">
+                        <p class="text-sm font-semibold">MOST POPULAR</p>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold mb-4">Comprehensive Analysis</h3>
+                        <p class="text-gray-600 mb-6">In-depth financial analysis with prioritized recommendations and implementation roadmap.</p>
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold">$24,500</span>
+                            <span class="text-gray-500">/ one-time</span>
+                        </div>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                Everything in Diagnostic Review
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                Detailed cost modeling
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                Scenario analysis
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                Implementation roadmap
+                            </li>
+                            <li class="flex items-center text-gray-400">
+                                <i class="fas fa-times text-gray-300 mr-3"></i>
+                                Ongoing support
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="px-8 pb-8">
+                        <a href="#contact" class="block w-full text-center bg-accent text-white px-6 py-3 rounded-md font-medium hover:bg-secondary transition">Get Started</a>
+                    </div>
+                </div>
+                
+                <!-- Tier 3 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold mb-4">Ongoing Advisory</h3>
+                        <p class="text-gray-600 mb-6">Continuous fleet financial optimization with quarterly reviews and updates.</p>
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold">$8,500</span>
+                            <span class="text-gray-500">/ month</span>
+                        </div>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                Everything in Comprehensive Analysis
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                Quarterly financial reviews
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                Implementation support
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                Executive dashboard access
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                Dedicated analyst
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="px-8 pb-8">
+                        <a href="#contact" class="block w-full text-center bg-gray-100 text-primary px-6 py-3 rounded-md font-medium hover:bg-gray-200 transition">Get Started</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-primary text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Optimize Your Fleet's Financial Performance?</h2>
+            <p class="text-xl text-gray-200 mb-8 max-w-3xl mx-auto">Schedule a free 30-minute consultation to discuss how we can help you reduce costs and improve efficiency.</p>
+            <a href="#contact" class="inline-flex items-center px-8 py-4 border border-transparent text-lg font-medium rounded-md text-primary bg-white hover:bg-gray-100 transition">
+                Book Free Consultation
+                <i class="fas fa-arrow-right ml-3"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-12">
+                <div class="mb-12 lg:mb-0">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Get in Touch</h2>
+                    <p class="text-xl text-gray-600 mb-8">Our team specializes in translating fleet data into financial insights for CFOs and finance teams.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex">
+                            <div class="flex-shrink-0 bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center">
+                                <i class="fas fa-map-marker-alt text-accent text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-bold">Headquarters</h4>
+                                <p class="text-gray-600">1234 Analytics Drive<br>Chicago, IL 60601</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="flex-shrink-0 bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center">
+                                <i class="fas fa-envelope text-accent text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-bold">Email Us</h4>
+                                <p class="text-gray-600">finance@fleetmetrics.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="flex-shrink-0 bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center">
+                                <i class="fas fa-phone-alt text-accent text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-bold">Call Us</h4>
+                                <p class="text-gray-600">(312) 555-ANLY</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-8 rounded-xl shadow-sm">
+                    <h3 class="text-2xl font-bold mb-6">Request a Consultation</h3>
+                    <form id="contactForm">
+                        <div class="mb-6">
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-accent focus:border-accent" required>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-accent focus:border-accent" required>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="company" class="block text-sm font-medium text-gray-700 mb-1">Company</label>
+                            <input type="text" id="company" name="company" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-accent focus:border-accent" required>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="fleet-size" class="block text-sm font-medium text-gray-700 mb-1">Fleet Size</label>
+                            <select id="fleet-size" name="fleet-size" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-accent focus:border-accent">
+                                <option value="1-10">1-10 vehicles</option>
+                                <option value="11-50">11-50 vehicles</option>
+                                <option value="51-100">51-100 vehicles</option>
+                                <option value="101-500">101-500 vehicles</option>
+                                <option value="500+">500+ vehicles</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">How can we help?</label>
+                            <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"></textarea>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <button type="submit" class="w-full bg-accent text-white px-6 py-3 rounded-md font-medium hover:bg-secondary transition">Submit Request</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="mb-8 md:mb-0">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-chart-line text-accent text-2xl mr-2"></i>
+                        <span class="text-xl font-bold">FleetMetrics</span>
+                    </div>
+                    <p class="text-gray-400">Data-driven fleet analytics for financial executives.</p>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Services</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Cost Optimization</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Asset Utilization</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Sustainability Planning</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Financial Benchmarking</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Case Studies</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Webinars</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Fleet Finance Guide</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Company</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 mb-4 md:mb-0">© 2023 FleetMetrics. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white">Privacy</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Terms</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Sitemap</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
+            }
+        });
+
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your request! Our team will contact you shortly.');
+            this.reset();
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const headerOffset = 80;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
